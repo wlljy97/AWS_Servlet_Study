@@ -16,8 +16,8 @@ import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 
 
-@WebServlet("/category")
-public class CategoryList extends HttpServlet {
+@WebServlet("/category") // URL 패턴 "/category"에 매핑
+public class CategoryList extends HttpServlet { // CategoryList 클래스를 정의 , HttpServlet 클래스를 확장하여 HTTP 요청을 처리
 	private static final long serialVersionUID = 1L;
 	
 	private String[] categoryArray = {
@@ -29,11 +29,11 @@ public class CategoryList extends HttpServlet {
 			"문화예술"
 	};
 	
-	private class Feed {
+	private class Feed { // 내부 클래스 Feed를 정의, 피드의 이름과 카테고리를 나타냄
 		private String feedName;
 		private String categoryName;
 		
-		public Feed(String feedName, String categoryName) {
+		public Feed(String feedName, String categoryName) { // 피드 객체 배열을 초기화
 			this.feedName = feedName;
 			this.categoryName = categoryName;
 		}
@@ -64,12 +64,13 @@ public class CategoryList extends HttpServlet {
 		
 	};
   
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // 서블릿 GET 요청을 처리
 		System.out.println(request.getRequestURI());
 		System.out.println(request.getMethod());
 		String categoryName = request.getParameter("categoryName");
 		System.out.println(categoryName);
 		
+		// 요청된 카테고리가 존재하는지 확인
 		if (!checkCategory(categoryName)) {
 			response.setCharacterEncoding("UTF-8");
 			response.setStatus(400); //400 오류를 나타냄
@@ -88,9 +89,9 @@ public class CategoryList extends HttpServlet {
 		Gson gson = new Gson();
 		
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json"); // "application/json" 컨텐츠의 타입이 json 타입으로 알려줌
+		response.setContentType("application/json"); // "application/json" 컨텐츠의 타입을 json으로 설정
 		response.getWriter().println(gson.toJson(findFeedByCategoryName(categoryName)).toString());  // 응답 데이터 return값이 list
-		
+		// Feed 객체의 목록을 JSON 표현으로 변환
 	}
 
 	private boolean checkCategory(String categoryName) {
