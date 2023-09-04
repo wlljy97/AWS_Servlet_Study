@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import data.UserData;
+import entity.User;
 import utils.JsonParseUtil;
 import utils.ResponseUtil;
 
@@ -39,16 +42,19 @@ public class SignupServlet extends HttpServlet {
 		
 		System.out.println(userMap);
 		
-//		System.out.println(userMap.get("username"));
-//		System.out.println(userMap.get("password"));
-//		System.out.println(userMap.get("name"));
-//		System.out.println(userMap.get("email"));
+		List<User> userList = UserData.userList;
 		
-		System.out.println("회원가입");
+		User user = User.builder()
+				.userId(userList.size() + 1)
+				.username((String) userMap.get("username"))
+				.password((String) userMap.get("password"))
+				.name((String) userMap.get("name"))
+				.email((String) userMap.get("email"))
+				.build();
 		
+		userList.add(user);
 		
 		ResponseUtil.response(response).of(200).body("회원가입성공");
-		
 		
 	}
 
